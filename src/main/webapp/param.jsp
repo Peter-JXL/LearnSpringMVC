@@ -56,5 +56,10 @@
             User生日：<input type="text" name="date" /> <br/>
             <input type="submit" value="提交" />
         </form>
+
+        <hr/>
+        <hr/>
+        <h2>演示Servlet原生的API</h2>
+        <a href="param/testServlet">请求参数绑定</a>
     </body>
 </html>

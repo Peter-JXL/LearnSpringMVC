@@ -5,6 +5,8 @@ import com.peterjxl.domain.Account;
 import com.peterjxl.domain.User2;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 演示请求参数绑定
@@ -56,6 +58,19 @@ public class ParamController {
     public String saveUser(User2 user2) {
         System.out.println("saveUser");
         System.out.println(user2);
+        return "success";
+    }
+
+    /**
+     * 演示原生的Servlet API
+     * @return
+     */
+    @RequestMapping("/testServlet")
+    public String testServlet(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("testServlet");
+        System.out.println(request);
+        System.out.println(response);
+        System.out.println(request.getSession());
         return "success";
     }
 }
