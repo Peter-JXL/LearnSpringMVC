@@ -9,7 +9,7 @@
 
         <hr/>
         <hr/>
-        <h1>演示参数绑定：基本类型</h1>
+        <h2>演示参数绑定：基本类型</h2>
         <form action="param/saveAccount" method="post">
             姓名：<input type="text" name="username" /> <br/>
             密码：<input type="text" name="password" /> <br/>
@@ -19,7 +19,7 @@
 
         <hr/>
         <hr/>
-        <h1>演示参数绑定：实体类型</h1>
+        <h2>演示参数绑定：实体类型</h2>
         <form action="param/saveAccount2" method="post">
             姓名：<input type="text" name="username" /> <br/>
             密码：<input type="text" name="password" /> <br/>
@@ -31,7 +31,7 @@
 
         <hr/>
         <hr/>
-        <h1>演示参数绑定：集合类型</h1>
+        <h2>演示参数绑定：集合类型</h2>
         <form action="param/saveAccount3" method="post">
             姓名：<input type="text" name="username" /> <br/>
             密码：<input type="text" name="password" /> <br/>
@@ -44,6 +44,16 @@
 
             map用户姓名：<input type="text" name="map['one'].uname" /> <br/>
             map用户年龄：<input type="text" name="map['one'].age" /> <br/>
+            <input type="submit" value="提交" />
+        </form>
+
+        <hr/>
+        <hr/>
+        <h2>演示参数绑定：自定义转换器</h2>
+        <form action="param/saveUser" method="post">
+            User姓名：<input type="text" name="uname" /> <br/>
+            User年龄：<input type="text" name="age" /> <br/>
+            User生日：<input type="text" name="date" /> <br/>
             <input type="submit" value="提交" />
         </form>
     </body>

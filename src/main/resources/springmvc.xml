@@ -19,4 +19,16 @@
         <property name="prefix" value="/WEB-INF/pages/"/> <!-- 前缀，可以理解为是文件的目录 -->
         <property name="suffix" value=".jsp"/>  <!-- 后缀，可以理解为是文件后缀名 -->
     </bean>
+
+    <!-- 注册自定义类型转换器-->
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="com.peterjxl.util.StringToDateConverter"/>
+            </set>
+        </property>
+    </bean>
+
+    <!-- 开启SpringMVC注解驱动 -->
+    <mvc:annotation-driven conversion-service="conversionService"/>
 </beans>
