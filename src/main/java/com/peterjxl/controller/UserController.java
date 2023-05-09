@@ -1,94 +1,86 @@
 package com.peterjxl.controller;
 
-import com.peterjxl.domain.User;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.ServletException;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
-    @RequestMapping("/testString")
-    public String testString(Model model) {
-        System.out.println("testString() is running...");
-        // 模拟从数据库中查询出User对象
-        User user = new User();
-        user.setUsername("王小美");
-        user.setPassword("123");
-        user.setAge(18);
-        model.addAttribute("user", user);
+
+    @RequestMapping("/fileUpload1")
+    public String fileUpload1(HttpServletRequest request) throws Exception{
+        System.out.println("fileUpload1");
+        
+        // 使用fileUpload组件完成文件上传
+        // 上传的位置
+        String realPath = request.getSession().getServletContext().getRealPath("/uploads/");
+        System.out.println("realPath: " + realPath);
+        // 判断路径是否存在
+        File file = new File(realPath);
+        if (! file.exists()) {
+            // 创建该文件夹
+            file.mkdirs();
+        }
+
+        // 解析request对象，获取上传文件项
+        DiskFileItemFactory factory = new DiskFileItemFactory();
+        ServletFileUpload upload = new ServletFileUpload(factory);
+
+        // 解析request
+        List<FileItem> items = upload.parseRequest(request);
+        for (FileItem item : items){
+            // 进行判断，当前item对象是否是上传文件项，如果不是则说明是表单内容
+            if (item.isFormField()){
+                // 是表单项
+            }else {
+                // 是上传文件项
+                // 获取上传文件的名称
+                String name = item.getName();
+                String uuid = UUID.randomUUID().toString().replace("-", "");// 防止文件名重复，这里我们将减号替换为空字符串
+                name = uuid + "_" + name;
+                // 完成文件上传
+                item.write(new File(realPath, name));
+                // 删除临时文件。当文件小于10kb，则文件是在内存中的；如果大于10kb，会有一个临时文件。
+                item.delete();
+            }
+        }
+
         return "success";
     }
 
-    /**
-     * 请求转发一次请求，不用编写项目名称
-     * 重定向是两次请求，得写上项目名字
-     * 忘了的同学可以复习下JavaWeb
-     */
-    @RequestMapping("/testVoid")
-    public void testVoid(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("testVoid() is running...");
-        //request.getRequestDispatcher("/WEB-INF/pages/success.jsp").forward(request, response);
-
-        // 重定向，不能直接写/WEB-INF/pages/success.jsp，因为这样会被视图解析器解析
-        //response.sendRedirect(request.getContextPath() + "/index.jsp");
 
 
-        // 解决中文乱码
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html;charset=UTF-8");
-        response.getWriter().println("你好, SpringMVC!");
-    }
+    @RequestMapping("/fileUpload2")
+    public String fileUpload2(HttpServletRequest request, MultipartFile upload) throws IOException {
 
-    @RequestMapping("/testModelAndView")
-    public ModelAndView testModelAndView() {
-        System.out.println("testModelAndView() is running...");
-        // 模拟从数据库中查询出User对象
-        User user = new User();
-        user.setUsername("咕噜咕噜滚下山真君");
-        user.setPassword("123");
-        user.setAge(18);
+        System.out.println("fileUpload2");
 
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("user", user);
-        mv.setViewName("success");
-        return mv;
-    }
 
-    @RequestMapping("/testForward")
-    public String testForward() {
-        System.out.println("testForward() is running...");
-        return "forward:/WEB-INF/pages/success.jsp";
-    }
+        String realPath = request.getSession().getServletContext().getRealPath("/uploads/");
+        System.out.println("realPath: " + realPath);
+        File file = new File(realPath);
+        if (! file.exists()) {
+            // 创建该文件夹
+            file.mkdirs();
+        }
 
-    @RequestMapping("/testRedirect")
-    public String testRedirect() {
-        System.out.println("testRedirect() is running...");
-        return "redirect:/index.jsp";
-    }
 
-    /**
-     * 模拟异步请求响应
-     * @param body
-     */
-    @RequestMapping("/testAjax")
-    @ResponseBody
-    public User testAjax(@RequestBody User user) {
-        System.out.println("testAjax() is running...");
-        System.out.println(user);
-
-        // 做响应，模拟查询数据库
-        user.setUsername("王小美");
-        user.setAge(19);
-        return user;
+        String originalFilename = upload.getOriginalFilename();
+        String uuid = UUID.randomUUID().toString().replace("-", "");// 防止文件名重复，这里我们将减号替换为空字符串
+        originalFilename = uuid + "_" + originalFilename;
+        upload.transferTo(new File(realPath, originalFilename));
+        return "success";
     }
 }
