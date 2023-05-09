@@ -3,16 +3,24 @@ package com.peterjxl.domain;
 import java.io.Serializable;
 
 public class User implements Serializable {
-
-    private String uname;
+    private String username;
+    private String password;
     private Integer age;
 
-    public String getUname() {
-        return uname;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUname(String uname) {
-        this.uname = uname;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Integer getAge() {
@@ -23,11 +31,11 @@ public class User implements Serializable {
         this.age = age;
     }
 
-
     @Override
     public String toString() {
         return "User{" +
-                "uname='" + uname + '\'' +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
                 ", age=" + age +
                 '}';
     }

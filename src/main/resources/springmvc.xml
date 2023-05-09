@@ -20,15 +20,10 @@
         <property name="suffix" value=".jsp"/>  <!-- 后缀，可以理解为是文件后缀名 -->
     </bean>
 
-    <!-- 注册自定义类型转换器-->
-    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
-        <property name="converters">
-            <set>
-                <bean class="com.peterjxl.util.StringToDateConverter"/>
-            </set>
-        </property>
-    </bean>
+
+    <!-- 前端控制器，哪些静态资源不拦截 -->
+    <mvc:resources mapping="/js/**" location="/js/" />
 
     <!-- 开启SpringMVC注解驱动 -->
-    <mvc:annotation-driven conversion-service="conversionService"/>
+    <mvc:annotation-driven/>
 </beans>
