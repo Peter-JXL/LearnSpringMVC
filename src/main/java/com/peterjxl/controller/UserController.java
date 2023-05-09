@@ -1,6 +1,8 @@
 package com.peterjxl.controller;
 
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.WebResource;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -63,7 +65,7 @@ public class UserController {
 
 
     @RequestMapping("/fileUpload2")
-    public String fileUpload2(HttpServletRequest request, MultipartFile upload) throws IOException {
+    public String fileUpload2(HttpServletRequest request,  MultipartFile upload) throws IOException {
 
         System.out.println("fileUpload2");
 
@@ -83,4 +85,28 @@ public class UserController {
         upload.transferTo(new File(realPath, originalFilename));
         return "success";
     }
+
+    @RequestMapping("/fileUpload3")
+    public String fileUpload3(MultipartFile upload) throws IOException {
+
+        // 定义上传文件服务器的路径
+        String path = "http://localhost:9090/fileUploadServer_war/uploads/";
+
+        System.out.println("fileUpload3");
+        String originalFilename = upload.getOriginalFilename();
+        String uuid = UUID.randomUUID().toString().replace("-", "");// 防止文件名重复，这里我们将减号替换为空字符串
+        originalFilename = uuid + "_" + originalFilename;
+
+        // 创建客户端对象
+        Client client = Client.create();
+
+        // 和文件服务器进行连接
+        WebResource resource = client.resource(path + originalFilename);
+
+        // 上传文件
+        resource.put(upload.getBytes());
+
+        return "success";
+    }
+
 }
