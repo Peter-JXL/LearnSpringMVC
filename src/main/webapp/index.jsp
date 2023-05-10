@@ -4,7 +4,7 @@
         <title>Title</title>
     </head>
     <body>
-        <h3>异常标签</h3>
-        <a href="user/textException">异常处理</a>
+        <h3>拦截器</h3>
+        <a href="user/testInterceptor">拦截器</a>
     </body>
 </html>

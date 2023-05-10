@@ -26,12 +26,21 @@
         <property name="maxUploadSize" value="10485760"/>
     </bean>
 
-    <!-- 配置异常处理器 -->
-    <bean id="sysExceptionResolver" class="com.peterjxl.exception.SysExceptionResolver"/>
+    <!-- 配置拦截器 -->
+    <mvc:interceptors>
+        <!-- 拦截器第一个拦截器 -->
+        <mvc:interceptor>
+            <!-- 拦截的路径 -->
+            <mvc:mapping path="/user/*"/>
+            <!-- 排除不拦截的路径 -->
+            <bean class="com.peterjxl.interceptor.MyInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
     <!-- 前端控制器，哪些静态资源不拦截 -->
     <mvc:resources mapping="/js/**" location="/js/" />
 
+    
     <!-- 开启SpringMVC注解驱动 -->
     <mvc:annotation-driven/>
 </beans>

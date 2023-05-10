@@ -4,6 +4,6 @@
         <title>Title</title>
     </head>
     <body>
-      ${errorMsg}
+      <h3>错误页面</h3>
     </body>
 </html>
